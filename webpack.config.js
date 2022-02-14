@@ -11,7 +11,28 @@ module.exports = {
     },
     output: {
         path: __dirname + '/dist',
-        filename: '[name].bundle.js',
+        filename: '[name].bundle.js'
+    },
+    module: {
+        rules: [
+            {
+                test: /\.jpg$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            esmodule: false,
+                            name(file) {
+                                return '[path][name].[ext]'
+                            },
+                            publicPath: function(url) {
+                                return url.replace('../', '/assets/')
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
     },
     plugins: [
         new webpack.ProvidePlugin({
